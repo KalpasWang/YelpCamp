@@ -1,0 +1,18 @@
+body {
+	font-family: 'Noto Sans TC', sans-serif;
+}
+
+.allcamps {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.new-camp {
+	text-align: center;
+}
+
+.new-camp-form {
+	width: 30%;
+	min-width: 100px;
+	margin: 20px auto;
+}

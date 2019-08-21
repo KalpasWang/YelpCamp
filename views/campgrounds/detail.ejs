@@ -1,0 +1,22 @@
+<% include ../partials/header %>
+
+<h1>
+	<%= camp.name %>
+</h1>
+
+<img src="<%= camp.img %>" alt="<%= camp.img %>">
+
+<p>
+	<%= camp.description %>
+</p>
+<p>
+	<a class="btn btn-primary" href="/campgrounds/<%= camp._id %>/comments/new">新增評論</a>
+</p>
+<% camp.comments.forEach(comment => { %>
+	<p>
+		<strong><%= comment.author %> - </strong>
+		<%= comment.text %>
+	</p>
+<% }); %>
+
+<% include ../partials/footer %>
