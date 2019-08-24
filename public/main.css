@@ -16,3 +16,11 @@ body {
 	min-width: 100px;
 	margin: 20px auto;
 }
+
+.thumbnail img {
+	width: 100%;
+}
+
+.thumbnail .caption-full {
+	padding: 10px;
+}

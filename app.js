@@ -16,7 +16,7 @@ mongoose.connect("mongodb+srv://goormIDE:4DS8pMEvjKfQyLbk@cluster0-xmhsz.gcp.mon
 	console.log("ERROR: ", err.message);
 });
 
-seed();
+//seed();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
