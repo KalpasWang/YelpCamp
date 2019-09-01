@@ -2,13 +2,17 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const seed = require("./seeds.js")
-const Campground = require("./models/campground.js");
-const Comment = require("./models/comment.js");
+const session = require("express-session"),
+	  passport = require("passport"),
+	  localStrategy = require("passport-local"),
+	  User = require("./models/user.js"),
+	  seed = require("./seeds.js"),
+	  Campground = require("./models/campground.js"),
+	  Comment = require("./models/comment.js");
 
 
 mongoose.connect("mongodb+srv://goormIDE:4DS8pMEvjKfQyLbk@cluster0-xmhsz.gcp.mongodb.net/test?retryWrites=true&w=majority", {
-	newUrlParser: true,
+	useNewUrlParser: true,
 	useCreateIndex: true
 }).then(() => {
 	console.log("Connected to MongoDB Atlas!");
@@ -20,6 +24,25 @@ mongoose.connect("mongodb+srv://goormIDE:4DS8pMEvjKfQyLbk@cluster0-xmhsz.gcp.mon
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+
+
+//passport configuration
+app.use(session({
+	secret: "jknhbgf",
+	resave: false,
+	saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
+//=============
+// ROUTES
+//=============
 
 app.get("/", (req, res) => {
 	res.render("landing");
@@ -107,6 +130,25 @@ app.post("/campgrounds/:id/comments", (req, res) => {
 
 
 
+////////////////////////
+//AUTH ROUTEs
+///////////////////////
+app.get("/register", (req, res) => {
+	res.render("auth/register");
+});
+
+app.post("/register", (req, res) => {
+	const newUser = new User({username: req.body.username});
+	User.register(newUser, req.body.password, (err, user) => {
+		if(err) {
+			console.log(err);
+			res.redirect("auth/register");
+		}
+		passport.authenticate("local")(req, res, () => {
+			res.redirect("/campgrounds");
+		})
+	})
+});
 
 
 
