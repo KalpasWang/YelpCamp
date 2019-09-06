@@ -34,9 +34,14 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user;
+	next();
+});
 
 
 
@@ -99,7 +104,7 @@ app.get("/campgrounds/:id", (req, res) => {
 ///////////////////////
 
 
-app.get("/campgrounds/:id/comments/new", (req, res) => {
+app.get("/campgrounds/:id/comments/new", isLoggedIn, (req, res) => {
 	Campground.findById(req.params.id, (err, foundCamp) => {
 		if(err) {
 			console.log(err);
@@ -150,8 +155,30 @@ app.post("/register", (req, res) => {
 	})
 });
 
+app.get("/login", (req, res) => {
+	res.render("auth/login");
+});
+
+app.post("/login", passport.authenticate("local",
+	{
+		successRedirect: "/campgrounds",
+		failureRedirect: "/login"
+	}), (req, res) => {
+	
+});
+
+app.get("/logout", (req, res) => {
+	req.logout();
+	res.redirect("/campgrounds");
+});
 
 
+function isLoggedIn(req, res, next) {
+	if(req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect("/login")
+}
 
 app.listen(3000, () => {
 	console.log("The YelpCamp Server start!");
