@@ -47,29 +47,28 @@ function seedDB() {
 				if(err) console.log(err);
 				else console.log("all comments removed");
 			});
-			data.forEach(seed => {
-				Campground.create(seed, (err, createdCamp) => {
-					if(err) {
-						console.log(err);
-					} else {
-						console.log("added a campground");
-						Comment.create({
-							text: "這裡很棒，風景很漂亮，可惜手機收訊不佳",
-							author: "Wei"
-						}, (err, createdComment) => {
-							if(err) {
-								console.log(err);
-							} else {
-								createdCamp.comments.push(createdComment);
-								createdCamp.save();
-								console.log("created new comment");
-							}
-						})
-					}
-				})
-			})
+			// data.forEach(seed => {
+			// 	Campground.create(seed, (err, createdCamp) => {
+			// 		if(err) {
+			// 			console.log(err);
+			// 		} else {
+			// 			console.log("added a campground");
+			// 			Comment.create({
+			// 				text: "這裡很棒，風景很漂亮，可惜手機收訊不佳",
+			// 				author: "Wei"
+			// 			}, (err, createdComment) => {
+			// 				if(err) {
+			// 					console.log(err);
+			// 				} else {
+			// 					createdCamp.comments.push(createdComment);
+			// 					createdCamp.save();
+			// 					console.log("created new comment");
+			// 				}
+			// 			})
+			// 		}
+			// 	})
+			// })
 		}
-		
 	})
 }
 

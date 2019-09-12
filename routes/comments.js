@@ -31,6 +31,9 @@ router.post("/", (req, res) => {
 				if(err) {
 					console.log(err);
 				} else {
+					createdComment.author.id = req.user._id;
+					createdComment.author.username = req.user.username;
+					createdComment.save();
 					foundCamp.comments.push(createdComment);
 					foundCamp.save();
 					res.redirect("/campgrounds/" + foundCamp._id);

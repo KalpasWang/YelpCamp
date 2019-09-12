@@ -16,11 +16,15 @@ router.get("/", (req, res) => {
 });
 
 //CREATE create new campground
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn, (req, res) => {
 	const name = req.body.name;
 	const img = req.body.img;
+	const author = {
+		id: req.user._id,
+		username: req.user.username
+	};
 	const description = req.body.description;
-	const newCamp = {name, img, description};
+	const newCamp = { name, img, description, author };
 	
 	Campground.create(newCamp, (err, newCampAdded) => {
 		if(err) {
@@ -33,7 +37,7 @@ router.post("/", (req, res) => {
 
 
 //NEW show form for creating new campground
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
 	res.render("campgrounds/new");
 });
 
@@ -48,6 +52,19 @@ router.get("/:id", (req, res) => {
 		}
 	});
 });
+
+
+//=============
+// MIDDLEWARE
+//=============
+
+function isLoggedIn(req, res, next) {
+	if(req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect("/login")
+}
+
 
 
 module.exports = router;
