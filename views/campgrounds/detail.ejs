@@ -15,10 +15,16 @@
 			<div class="thumbnail">
 				<img class="img-responsive" src="<%= camp.img %>" alt="<%= camp.img %>">
 				<div class="caption-full">
-					<h4 class="pull-right">NT $500/night</h4>
+					<h4 class="pull-right"><strong>NT $500/night</strong></h4>
 					<h4><a><%= camp.name %></a></h4>
-					<p><%= camp.description %></p>
+					<p class="caption-full"><%= camp.description %></p>
 					<p><em>由 <%= camp.author.username %> 建立</em></p>
+					<% if(currentUser && camp.author.id.equals(currentUser._id)) { %>
+						<a class="btn btn-sm btn-warning" href="/campgrounds/<%= camp._id %>/edit">編輯</a>
+						<form class="delete-form" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
+							<button class="btn btn-sm btn-danger">刪除</button>
+						</form>
+					<% } %>
 				</div>
 			</div>
 			<div class="well">
@@ -34,6 +40,12 @@
 							<p>
 								<%= comment.text %>
 							</p>
+							<a class="btn btn-xs btn-warning" href="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>/edit">編輯</a>
+							<form class="delete-form" action="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+								<button class="btn btn-xs btn-danger">
+									刪除
+								</button>
+							</form>
 						</div>
 					</div>
 				<% }); %>

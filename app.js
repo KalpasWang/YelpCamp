@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const session = require("express-session"),
 	  passport = require("passport"),
 	  localStrategy = require("passport-local"),
+	  methodOverride = require("method-override"),
 	  User = require("./models/user.js"),
 	  seed = require("./seeds.js"),
 	  indexRouter = require("./routes/index"),
@@ -14,7 +15,8 @@ const session = require("express-session"),
 
 mongoose.connect("mongodb+srv://goormIDE:4DS8pMEvjKfQyLbk@cluster0-xmhsz.gcp.mongodb.net/test?retryWrites=true&w=majority", {
 	useNewUrlParser: true,
-	useCreateIndex: true
+	useCreateIndex: true,
+	useFindAndModify: false
 }).then(() => {
 	console.log("Connected to MongoDB Atlas!");
 }).catch(err => {
@@ -25,6 +27,7 @@ mongoose.connect("mongodb+srv://goormIDE:4DS8pMEvjKfQyLbk@cluster0-xmhsz.gcp.mon
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 
 //passport configuration

@@ -43,6 +43,14 @@ router.post("/", (req, res) => {
 	});
 });
 
+router.get("/:comment_id/edit", (req, res) => {
+	res.send("EDIT COMMENT PAGE");
+});
+
+router.delete("/:comment_id", (req, res) => {
+	res.send("DELETE COMMENT PAGE");
+});
+
 
 
 //=============
