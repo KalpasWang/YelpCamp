@@ -40,12 +40,14 @@
 							<p>
 								<%= comment.text %>
 							</p>
-							<a class="btn btn-xs btn-warning" href="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>/edit">編輯</a>
-							<form class="delete-form" action="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-								<button class="btn btn-xs btn-danger">
-									刪除
-								</button>
-							</form>
+							<% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+								<a class="btn btn-xs btn-warning" href="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>/edit">編輯</a>
+								<form class="delete-form" action="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+									<button class="btn btn-xs btn-danger">
+										刪除
+									</button>
+								</form>
+							<% } %>
 						</div>
 					</div>
 				<% }); %>
