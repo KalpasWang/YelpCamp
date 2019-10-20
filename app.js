@@ -6,6 +6,7 @@ const session = require("express-session"),
 	  passport = require("passport"),
 	  localStrategy = require("passport-local"),
 	  methodOverride = require("method-override"),
+	  flash = require("connect-flash"),
 	  User = require("./models/user.js"),
 	  seed = require("./seeds.js"),
 	  indexRouter = require("./routes/index"),
@@ -28,6 +29,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 
 //passport configuration
@@ -44,6 +46,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
 	next();
 });
 

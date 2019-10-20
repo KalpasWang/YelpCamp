@@ -1,7 +1,9 @@
 const express = require("express"),
       router = express.Router(),
 	  passport = require("passport"),
-	  User = require("../models/user");
+	  User = require("../models/user"),
+	  Error = require("../messages/error"),
+	  Success = require("../messages/success");
       
 
 
@@ -26,10 +28,11 @@ router.post("/register", (req, res) => {
 	const newUser = new User({username: req.body.username});
 	User.register(newUser, req.body.password, (err, user) => {
 		if(err) {
-			console.log(err);
+			req.flash("error", Error.FAIL + err);
 			res.redirect("auth/register");
 		}
 		passport.authenticate("local")(req, res, () => {
+			req.flash("success", Success.SIGNUP_SUCCESS);
 			res.redirect("/campgrounds");
 		})
 	})
@@ -46,7 +49,8 @@ router.get("/login", (req, res) => {
 router.post("/login", passport.authenticate("local",
 	{
 		successRedirect: "/campgrounds",
-		failureRedirect: "/login"
+		failureRedirect: "/login",
+		failureFlash: Error.LOGIN_FAILURE
 	}), (req, res) => {
 	
 });
